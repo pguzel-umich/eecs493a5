@@ -33,11 +33,11 @@
       <div class="input-group mb-3" id="search-bar">
         <div class="input-group-prepend">
           <span class="input-group-text px-2">&#128269;</span>
-          <!-- change into button and add v-on:click="searchArtist" and type="button" to make interactable-->
+          <!-- change into button and add v-on:click="searchBar" and type="button" to make interactable-->
         </div>
         <div class="dropdown w-84">
-          <input type="text" class="form-control px-2" placeholder="type artist name and enter" v-model="searchQuery"
-            v-on:keyup.enter="searchArtist" />
+          <input type="text" class="form-control px-2" placeholder="type artist name and enter" v-model="search_entry"
+            v-on:keyup.enter="searchBar" />
         </div>
       </div>
       <!-- Favorites -->
@@ -95,6 +95,10 @@
       </nav>
       <!-- Artist Search Results -->
       <div class="container">
+
+        <h4>Search Resutls (Total {{ search_count }} Found.)</h4>
+        <!-- “Total N found” message should display N = the total number of artists (results) returned by the iTunes API. -->
+
         <div class="row">
           <!-- Genre Buttons -->
           <div class="col-lg-12 col-md-12 col-sm-12">
