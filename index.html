@@ -1,0 +1,157 @@
+<!-- ====================== EECS 493 Assignment 5 Starter Code ====================== -->
+<!DOCTYPE html>
+<html lang="en-US">
+
+<head>
+  <title> 493 Artist Search</title>
+  <!--Bootstrap 5-->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+    crossorigin="anonymous"></script>
+  <!--Optional Theme-->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
+    integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+  <!--Custom Style-->
+  <link rel="stylesheet" type="text/css" href="index.css">
+  <!--Vue-->
+  <script src="https://unpkg.com/vue@3"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.0/axios.min.js"></script>
+</head>
+
+<body>
+  <div id="app" class="d-flex flex-row">
+    <!-- Side Bar -->
+    <div class="d-flex flex-column flex-shrink-0 p-3 bg-body-tertiary side-bar sticky-top">
+      <!-- Title -->
+      <div class="d-flex align-items-center mb-3 mb-md-0 me-md-auto">
+        <span class="fs-2 fw-bold">Artist Search 493</span>
+      </div>
+      <hr>
+      <!-- Search Bar -->
+      <div class="input-group mb-3" id="search-bar">
+        <div class="input-group-prepend">
+          <span class="input-group-text px-2">&#128269;</span>
+          <!-- change into button and add v-on:click="searchArtist" and type="button" to make interactable-->
+        </div>
+        <div class="dropdown w-84">
+          <input type="text" class="form-control px-2" placeholder="type artist name and enter" v-model="searchQuery"
+            v-on:keyup.enter="searchArtist" />
+        </div>
+      </div>
+      <!-- Favorites -->
+      <div id="favorites" class="mb-1">
+        <button class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed gap-1 m-2"
+          data-bs-toggle="collapse" data-bs-target="#favorite-collapse" aria-expanded="true">
+          <img src="./assets/Library.svg" />
+          Favorites
+        </button>
+        <div class="collapse show" id="favorite-collapse">
+          <ul class="btn-toggle-nav list-unstyled fw-normal pb-1">
+            <li>
+              <div class="d-inline-flex flex-column one-favorite">
+                <div class="scrolling-text">Example Track Name</div>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <!-- Main Page -->
+    <div class="flex-fill">
+      <!-- Top Bar -->
+      <nav class="navbar navbar-default sticky-top">
+        <div class="container">
+          <!-- Music Controls -->
+          <div id="music-controls">
+            <button disabled>
+              <img src="./assets/Shuffle.svg" alt="shuffle" width="15px" height="15px" />
+            </button>
+            <button disabled>
+              <img src="./assets/Back.svg" alt="back" />
+            </button>
+            <button>
+              <img src='./assets/Play.svg' alt="play" />
+            </button>
+            <button>
+              <img src="./assets/Fwd.svg" alt="fwd" />
+            </button>
+            <button>
+              <img src='./assets/Repeat.svg' alt="repeat" width="15px" height="15px" />
+            </button>
+          </div>
+          <!-- Currently Playing Track -->
+          <div class="p-3 m-1">
+            <img src="./assets/Song.svg" />
+          </div>
+          <!-- Volume Controls -->
+          <div id="sound" class="d-flex flex-row align-items-center gap-1">
+            <img src="./assets/VolumeDown.svg" alt="volume-down" width="15px" height="15px" />
+            <input type="range" min="1" max="100">
+            <img src="./assets/VolumeUp.svg" alt="volume-up" width="15px" height="15px" />
+          </div>
+        </div>
+      </nav>
+      <!-- Artist Search Results -->
+      <div class="container">
+        <div class="row">
+          <!-- Genre Buttons -->
+          <div class="col-lg-12 col-md-12 col-sm-12">
+            <div>
+              <button class="btn btn-success">ALL</button>
+            </div>
+            <h4>
+              List of results
+            </h4>
+          </div>
+          <!-- Tracks -->
+          <div class='col-lg-6 col-md-6 col-sm-6 artist'>
+            <div class="row">
+              <div class='artist-albumcover col-sm-4'>
+                <img v-bind:src="artist1">
+              </div>
+
+              <div class='artist-info col-sm-6'>
+                <ul class="nav nav-tabs">
+                  <li class="nav-item">
+                    <button class="nav-link active" data-bs-toggle="tab" type="button">Tab 1</button>
+                  </li>
+                  <li class="nav-item">
+                    <button class="nav-link" data-bs-toggle="tab" type="button">Tab 2</button>
+                  </li>
+                </ul>
+                <div class="tab-content">
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class='col-lg-6 col-md-6 col-sm-6 artist'>
+            <div class="row">
+              <div class='artist-albumcover col-sm-4'>
+                <img v-bind:src="artist2">
+              </div>
+
+              <div class='artist-info col-sm-6'>
+                <ul class="nav nav-tabs">
+                  <li class="nav-item">
+                    <button class="nav-link active" data-bs-toggle="tab" type="button">Tab 1</button>
+                  </li>
+                  <li class="nav-item">
+                    <button class="nav-link" data-bs-toggle="tab" type="button">Tab 2</button>
+                  </li>
+                </ul>
+                <div class="tab-content">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src="script.js"></script>
+</body>
+
+</html>
